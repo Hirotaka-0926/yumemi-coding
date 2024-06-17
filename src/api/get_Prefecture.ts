@@ -2,12 +2,12 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Prefecture } from '../models/Prefecture';
 
 //const API_KEY:string | undefined=process.env.API_KEY;
-const API_KEY:string ='iRA3bSO39WqHMFINak51SfOIv2dJar7SeboigCvm';
-//const BASE_URL=process.env.BASE_URL;
-const BASE_URL='https://opendata.resas-portal.go.jp';
+const API_KEY:string | undefined= process.env.API_KEY;
+const BASE_URL=process.env.BASE_URL;
 
 
-async function getPrefecture(){
+
+export async function fetchPrefecture ():Promise<Prefecture[]>{
     if (!API_KEY) {
         throw new Error("API_KEY is not defined");
     }
@@ -25,42 +25,18 @@ async function getPrefecture(){
                 
             }
         };
-        const response= await axios(option);
+        const response: AxiosResponse<Prefecture[]> = await axios.request(option);
         console.log(response.data);
-    }
-    catch(error){
-        console.error("Error fetching data:", error);
-    }
+        if (response.data.length > 0) {
+            return response.data;
+          } else {
+            throw new Error("No prefectures found");
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+          throw new Error("Failed to fetch prefecture");
+        }
 }
 
 
-async function getPopulation(prefCode: number, cityCode: string){
-    if (!API_KEY) {
-        throw new Error("API_KEY is not defined");
-      }
-      
-      if (!BASE_URL) {
-        throw new Error("BASE_URL is not defined");
-      }
-    try{
-        const option: AxiosRequestConfig ={
-            url: 'api/v1/population/composition/perYear',
-            baseURL: BASE_URL,
-            headers:{'X-API_KEY': API_KEY},
-            params:{
-                prefCode:prefCode,
-                cityCode:cityCode
-            }
-        };
-        const response= await axios(option).then((res: AxiosResponse<Prefecture[]>)=>{
-            console.log(response);
-            
-        });
-        
-        return response
 
-    }
-    catch(error){
-        console.error("Error fetching data:", error);
-    }
-}
