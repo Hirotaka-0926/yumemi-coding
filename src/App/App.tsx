@@ -1,15 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+
+import CheckBoxlist from '../component/checkbox';
 
 
-
-
-
-
-function App() {
+const App : React.FC = () => {
   return (
     <div className="App">
-
+      
+      <CheckBoxlist />
     </div>
   );
 }

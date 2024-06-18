@@ -2,8 +2,8 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Prefecture } from '../models/Prefecture';
 
 //const API_KEY:string | undefined=process.env.API_KEY;
-const API_KEY:string | undefined= process.env.API_KEY;
-const BASE_URL=process.env.BASE_URL;
+const API_KEY:string | undefined= process.env.REACT_APP_API_KEY;
+const BASE_URL=process.env.REACT_APP_BASE_URL;
 
 
 
@@ -27,8 +27,10 @@ export async function fetchPrefecture ():Promise<Prefecture[]>{
         };
         const response: AxiosResponse<Prefecture[]> = await axios.request(option);
         console.log(response.data);
-        if (response.data.length > 0) {
-            return response.data;
+        console.log(response.data.result);
+        console.log("Response data type:", typeof response.data.result);
+        if (response.data.result) {
+            return response.data.result;
           } else {
             throw new Error("No prefectures found");
           }

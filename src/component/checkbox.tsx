@@ -1,9 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {usePrefecture} from '../hook/prefecture';
 
 const CheckBoxlist: React.FC = () => {
     const {prefecture} = usePrefecture();
 
+    if (prefecture.length === 0) {
+        return <div>Loading...</div>;
+    }
     return (
         <div className="CheckBoxlist">
             {prefecture.map((pref) => (
